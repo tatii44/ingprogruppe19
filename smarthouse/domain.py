@@ -8,10 +8,90 @@ class Measurement:
         self.value = value
         self.unit = unit
 
-
-
 # TODO: Add your own classes here!
 
+# smarthouse/domain.py
+
+class Measurement:
+    """Represents a measurement taken from a sensor."""
+    def __init__(self, timestamp, value, unit):
+        self.timestamp = timestamp
+        self.value = value
+        self.unit = unit
+
+
+class Device:
+    """Base class for devices like sensors and actuators."""
+    def __init__(self, device_id, name):
+        self.device_id = device_id
+        self.name = name
+
+
+class Sensor(Device):
+    """Represents a sensor that takes measurements."""
+    def __init__(self, device_id, name):
+        super().__init__(device_id, name)
+        self.measurements = []
+
+    def add_measurement(self, measurement):
+        self.measurements.append(measurement)
+
+
+class Actuator(Device):
+    """Represents an actuator that can perform actions."""
+    def __init__(self, device_id, name):
+        super().__init__(device_id, name)
+        self.state = None
+
+    def set_state(self, state):
+        self.state = state
+
+
+class Room:
+    """Represents a room in the house."""
+    def __init__(self, name, size):
+        self.name = name
+        self.size = size
+        self.devices = []
+
+    def add_device(self, device):
+        self.devices.append(device)
+
+
+class Floor:
+    """Represents a floor containing multiple rooms."""
+    def __init__(self, level):
+        self.level = level
+        self.rooms = []
+
+    def add_room(self, room):
+        self.rooms.append(room)
+
+
+class SmartHouse:
+    """Main class to manage floors, rooms, and devices."""
+    def __init__(self):
+        self.floors = []
+
+    def register_floor(self, level):
+        floor = Floor(level)
+        self.floors.append(floor)
+        return floor
+
+    def register_room(self, floor, size, name):
+        room = Room(name, size)
+        floor.add_room(room)
+        return room
+
+    def get_floors(self):
+        return self.floors
+
+    def get_rooms(self):
+        rooms = [room for floor in self.floors for room in floor.rooms]
+        return rooms
+
+    def get_area(self):
+        return sum(room.size for floor in self.floors for room in floor.rooms)
 
 class SmartHouse:
     """

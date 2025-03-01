@@ -1,3 +1,26 @@
+# tests/test_part_a.py
+
+from smarthouse.domain import SmartHouse
+
+def test_register_floor():
+    house = SmartHouse()
+    floor = house.register_floor(1)
+    assert floor.level == 1
+    assert len(house.get_floors()) == 1
+
+def test_register_room():
+    house = SmartHouse()
+    floor = house.register_floor(1)
+    room = house.register_room(floor, 20.0, "Living Room")
+    assert room.name == "Living Room"
+    assert len(house.get_rooms()) == 1
+    assert house.get_area() == 20.0
+
+if __name__ == "__main__":
+    test_register_floor()
+    test_register_room()
+    print("All tests passed!")
+
 from unittest import TestCase, main
 
 from pathlib import Path
